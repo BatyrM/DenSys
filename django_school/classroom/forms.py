@@ -3,31 +3,40 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
 
-from classroom.models import (Answer, Question, Student, StudentAnswer,
+from classroom.models import (Answer, Question, Student, Teacher, StudentAnswer,
                               Subject, User)
 
 
 class TeacherSignUpForm(UserCreationForm):
+    content = forms.CharField(label='Content', max_length=100)
+    certificate = forms.CharField(label='Certficate', max_length=100)
+
     class Meta(UserCreationForm.Meta):
         model = User
-
-    def save(self, commit=True):
+        fields = ['username', 'content', 'iin', 'certificate']
+    
+    @transaction.atomic
+    def save(self):
         user = super().save(commit=False)
         user.is_teacher = True
-        if commit:
-            user.save()
+        user.save()
+        teacher = Teacher.objects.create(user=user)
+        teacher.certificate = self.cleaned_data.get('certificate')
+        teacher.save()
         return user
 
 
 class StudentSignUpForm(UserCreationForm):
-    interests = forms.ModelMultipleChoiceField(
+    interests = forms.ModelChoiceField(
         queryset=Subject.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.Select,
         required=True
     )
+    content = forms.CharField(label='Content', max_length=100)
 
     class Meta(UserCreationForm.Meta):
         model = User
+        fields = ['username', 'content', 'iin']
 
     @transaction.atomic
     def save(self):
