@@ -4,7 +4,7 @@ from django.utils.html import escape, mark_safe
 
 
 class User(AbstractUser):
-    is_student = models.BooleanField(default=False)
+    is_patient = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     content = models.CharField(default='devhiuse', max_length=100)
     iin = models.CharField(default='',max_length=20)    
@@ -49,10 +49,10 @@ class Answer(models.Model):
         return self.text
 
 
-class Student(models.Model):
+class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     quizzes = models.ManyToManyField(Quiz, through='TakenQuiz')
-    interests = models.ManyToManyField(Subject, related_name='interested_students')
+    interests = models.ManyToManyField(Subject, related_name='interested_patients')
 
     def get_unanswered_questions(self, quiz):
         answered_questions = self.quiz_answers \
@@ -74,12 +74,12 @@ class Teacher(models.Model):
 
 
 class TakenQuiz(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='taken_quizzes')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='taken_quizzes')
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='taken_quizzes')
     score = models.FloatField()
     date = models.DateTimeField(auto_now_add=True)
 
 
-class StudentAnswer(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='quiz_answers')
+class PatientAnswer(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='quiz_answers')
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='+')

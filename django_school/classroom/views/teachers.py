@@ -106,7 +106,7 @@ class QuizResultsView(DetailView):
 
     def get_context_data(self, **kwargs):
         quiz = self.get_object()
-        taken_quizzes = quiz.taken_quizzes.select_related('student__user').order_by('-date')
+        taken_quizzes = quiz.taken_quizzes.select_related('patient__user').order_by('-date')
         total_taken_quizzes = taken_quizzes.count()
         quiz_score = quiz.taken_quizzes.aggregate(average_score=Avg('score'))
         extra_context = {

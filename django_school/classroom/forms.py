@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
 
-from classroom.models import (Answer, Question, Student, Teacher, StudentAnswer,
+from classroom.models import (Answer, Question, Patient, Teacher, PatientAnswer,
                               Subject, User)
 
 
@@ -26,7 +26,7 @@ class TeacherSignUpForm(UserCreationForm):
         return user
 
 
-class StudentSignUpForm(UserCreationForm):
+class PatientSignUpForm(UserCreationForm):
     interests = forms.ModelChoiceField(
         queryset=Subject.objects.all(),
         widget=forms.Select,
@@ -41,16 +41,16 @@ class StudentSignUpForm(UserCreationForm):
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
-        user.is_student = True
+        user.is_patient = True
         user.save()
-        student = Student.objects.create(user=user)
-        student.interests.add(*self.cleaned_data.get('interests'))
+        patient = Patient.objects.create(user=user)
+        # patient.interests.add(*self.cleaned_data.get('interests'))
         return user
 
 
-class StudentInterestsForm(forms.ModelForm):
+class PatientInterestsForm(forms.ModelForm):
     class Meta:
-        model = Student
+        model = Patient
         fields = ('interests', )
         widgets = {
             'interests': forms.CheckboxSelectMultiple
@@ -85,7 +85,7 @@ class TakeQuizForm(forms.ModelForm):
         empty_label=None)
 
     class Meta:
-        model = StudentAnswer
+        model = PatientAnswer
         fields = ('answer', )
 
     def __init__(self, *args, **kwargs):

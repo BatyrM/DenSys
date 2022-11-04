@@ -1,18 +1,18 @@
 from django.urls import include, path
 from django.contrib import admin
 
-from .views import classroom, students, teachers
+from .views import classroom, patients, teachers
 
 urlpatterns = [
     path('', classroom.home, name='home'),
     path('admin/', admin.site.urls ),
 
-    path('students/', include(([
-        path('', students.QuizListView.as_view(), name='quiz_list'),
-        path('interests/', students.StudentInterestsView.as_view(), name='student_interests'),
-        path('taken/', students.TakenQuizListView.as_view(), name='taken_quiz_list'),
-        path('quiz/<int:pk>/', students.take_quiz, name='take_quiz'),
-    ], 'classroom'), namespace='students')),
+    path('patients/', include(([
+        path('', patients.QuizListView.as_view(), name='quiz_list'),
+        path('interests/', patients.PatientInterestsView.as_view(), name='patient_interests'),
+        path('taken/', patients.TakenQuizListView.as_view(), name='taken_quiz_list'),
+        path('quiz/<int:pk>/', patients.take_quiz, name='take_quiz'),
+    ], 'classroom'), namespace='patients')),
 
     path('teachers/', include(([
         path('', teachers.QuizListView.as_view(), name='quiz_change_list'),

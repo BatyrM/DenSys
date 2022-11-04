@@ -1,5 +1,5 @@
 .logo {
-  font-family: 'Clicker Script', cursive;
+  font-family: "Clicker Script", cursive;
 }
 
 .logo a {
@@ -8,7 +8,7 @@
 }
 
 footer {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 footer a {
@@ -25,20 +25,20 @@ footer a {
 }
 
 .list-group-formset .form-control {
-  padding: .25rem .5rem;
-  font-size: .875rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
   line-height: 1.5;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
 }
 
-.btn-student {
+.btn-patient {
   color: #fff;
   background-color: #91afb6;
   border-color: #91afb6;
 }
 
-.btn-student:hover,
-.btn-student:active {
+.btn-patient:hover,
+.btn-patient:active {
   color: #fff;
   background-color: #608993;
   border-color: #608993;
@@ -53,8 +53,8 @@ footer a {
 .btn-teacher:hover,
 .btn-teacher:active {
   color: #fff;
-  background-color: #66598B;
-  border-color: #66598B;
+  background-color: #66598b;
+  border-color: #66598b;
 }
 
 .has-danger .radio,

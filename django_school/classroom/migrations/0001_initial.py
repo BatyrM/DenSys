@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('is_student', models.BooleanField(default=False)),
+                ('is_patient', models.BooleanField(default=False)),
                 ('is_teacher', models.BooleanField(default=False)),
             ],
             options={
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='StudentAnswer',
+            name='patientAnswer',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('answer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to='classroom.Answer')),
@@ -90,10 +90,10 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Student',
+            name='patient',
             fields=[
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('interests', models.ManyToManyField(related_name='interested_students', to='classroom.Subject')),
+                ('interests', models.ManyToManyField(related_name='interested_patients', to='classroom.Subject')),
             ],
         ),
         migrations.AddField(
@@ -128,16 +128,16 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='takenquiz',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='taken_quizzes', to='classroom.Student'),
+            name='patient',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='taken_quizzes', to='classroom.patient'),
         ),
         migrations.AddField(
-            model_name='studentanswer',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='quiz_answers', to='classroom.Student'),
+            model_name='patientanswer',
+            name='patient',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='quiz_answers', to='classroom.patient'),
         ),
         migrations.AddField(
-            model_name='student',
+            model_name='patient',
             name='quizzes',
             field=models.ManyToManyField(through='classroom.TakenQuiz', to='classroom.Quiz'),
         ),
